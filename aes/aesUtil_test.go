@@ -7,14 +7,26 @@ import (
 )
 
 func TestAesEncrypt(t *testing.T) {
-	src := "zheshiyaojiamideshuju"
-	key := "zheshimishi"
-	res, err := AesEncrypt([]byte(src), []byte(key), Aes256)
+	src := getaesdata("b")
+	key := getaesdata("A")
+	fmt.Println([]byte(src))
+	fmt.Println([]byte(key))
+	res, err := AesEncrypt([]byte(src), []byte(key), Aes128)
 	if err != nil {
 		t.Fail()
 		return
 	}
+	fmt.Println(res)
 	fmt.Println(base64.Base64Encoding(res))
+}
+
+func getaesdata(a string) string {
+	res := ""
+	for i := 0; i < 16; i++ {
+		res += a
+	}
+	fmt.Println(res)
+	return res
 }
 
 func TestAesDecrypt(t *testing.T) {
