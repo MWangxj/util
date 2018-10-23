@@ -22,19 +22,20 @@ func getaesdata(a string) string {
 	for i := 0; i < 16; i++ {
 		res += a
 	}
+	fmt.Println(res)
 	return res
 }
 
 func TestAesDecrypt(t *testing.T) {
-	bstr := "GQ8PMJyhiFU+0Ucv3GSPnwhPjlt67xTNVuhrnTKFiu4="
-	key := "zheshimishi"
+	bstr := "snutgEYob6aShTsQFvoqsSqplsbCj1O6CBF3l2ukFVA="
+	key := "aaaaaaaaaaaaaaaa"
 
 	data, err := base64.Base64Decoding(bstr)
 	if err != nil {
 		t.Fail()
 		return
 	}
-	res, err := AesDecrypt(data, []byte(key), Aes256)
+	res, err := AesDecrypt(data, []byte(key), Aes128)
 	if err != nil {
 		t.Fail()
 		return

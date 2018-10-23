@@ -1,6 +1,7 @@
 package aes
 
 import (
+	"bytes"
 	"crypto/aes"
 	"crypto/cipher"
 	"git.dian.so/leto/util/byte2str"
@@ -68,8 +69,15 @@ func aesEncry(origData, key []byte) ([]byte, error) {
 		return nil, err
 	}
 	blockSize := block.BlockSize()
+	origData = pkcs5Padding(origData, blockSize)
 	blockMode := cipher.NewCBCEncrypter(block, key[:blockSize])
 	crypted := make([]byte, len(origData))
 	blockMode.CryptBlocks(crypted, origData)
 	return crypted, nil
+}
+
+func pkcs5Padding(ciphertext []byte, blockSize int) []byte {
+	padding := blockSize - len(ciphertext)%blockSize
+	padtext := bytes.Repeat([]byte{byte(padding)}, padding)
+	return append(ciphertext, padtext...)
 }
