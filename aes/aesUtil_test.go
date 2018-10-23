@@ -8,15 +8,12 @@ import (
 
 func TestAesEncrypt(t *testing.T) {
 	src := getaesdata("b")
-	key := getaesdata("A")
-	fmt.Println([]byte(src))
-	fmt.Println([]byte(key))
+	key := getaesdata("a")
 	res, err := AesEncrypt([]byte(src), []byte(key), Aes128)
 	if err != nil {
 		t.Fail()
 		return
 	}
-	fmt.Println(res)
 	fmt.Println(base64.Base64Encoding(res))
 }
 
@@ -25,7 +22,6 @@ func getaesdata(a string) string {
 	for i := 0; i < 16; i++ {
 		res += a
 	}
-	fmt.Println(res)
 	return res
 }
 
