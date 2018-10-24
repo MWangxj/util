@@ -88,7 +88,7 @@ func format(ap *app, endpoint, url string, param interface{}, ver version) (map[
 	newParam := map[string]string{
 		"data": base64.Base64Encoding(ecyData),
 		"ts":   ts,
-		"sign": md5Str,
+		"sign": md5Str[:16],
 		"v":    strconv.Itoa(int(ver)),
 	}
 	return newParam, nil

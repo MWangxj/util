@@ -71,6 +71,7 @@ func Post(url string, header map[string]string, payload interface{}, resp interf
 	if req, err = http.NewRequest("POST", url, strings.NewReader(byte2str.BytesToString(data))); err != nil {
 		return err
 	}
+	req.Header.Set("Content-Type","application/json")
 	for k, v := range header {
 		req.Header.Add(k, v)
 	}
