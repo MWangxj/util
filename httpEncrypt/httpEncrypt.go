@@ -30,7 +30,7 @@ func NewApp(source, secret, salt string) *app {
 	}
 }
 
-func Get(ap *app, endpoint, url string, param interface{}, resp interface{}) error {
+func Get(ap *app, endpoint, url string, header map[string]string, param interface{}, resp interface{}) error {
 	var (
 		newParam map[string]string
 		err      error
@@ -43,10 +43,10 @@ func Get(ap *app, endpoint, url string, param interface{}, resp interface{}) err
 	} else {
 		url = endpoint + "/" + url
 	}
-	return http.Get(url, nil, newParam, resp)
+	return http.Get(url, header, newParam, resp)
 }
 
-func Post(ap *app, endpoint, url string, param interface{}, resp interface{}) error {
+func Post(ap *app, endpoint, url string, header map[string]string, param interface{}, resp interface{}) error {
 	var (
 		newParam map[string]string
 		err      error
@@ -59,7 +59,7 @@ func Post(ap *app, endpoint, url string, param interface{}, resp interface{}) er
 	} else {
 		url = endpoint + "/" + url
 	}
-	return http.Post(url, nil, newParam, resp)
+	return http.Post(url, header, newParam, resp)
 }
 
 func format(ap *app, endpoint, url string, param interface{}, ver version) (map[string]string, error) {
