@@ -2,11 +2,13 @@ package httpEncrypt
 
 import (
 	"encoding/json"
+	"errors"
 	"git.dian.so/leto/util/aes"
 	"git.dian.so/leto/util/base64"
 	"git.dian.so/leto/util/byte2str"
 	"git.dian.so/leto/util/http"
 	"git.dian.so/leto/util/md5"
+	"reflect"
 	"strconv"
 	"time"
 )
@@ -30,6 +32,9 @@ func NewApp(source, secret, salt string) *app {
 }
 
 func Get(ap *app, endpoint, url string, param interface{}, ver version, resp interface{}) error {
+	if reflect.ValueOf(resp).Kind() != reflect.Ptr {
+		return errors.New("resp interface must be a pointer")
+	}
 	newParam, err := format(ap, endpoint, url, param, ver)
 	if err != nil {
 		return err
@@ -38,11 +43,14 @@ func Get(ap *app, endpoint, url string, param interface{}, ver version, resp int
 }
 
 func Post(ap *app, endpoint, url string, param interface{}, ver version, resp interface{}) error {
+	if reflect.ValueOf(resp).Kind() != reflect.Ptr {
+		return errors.New("resp interface must be a pointer")
+	}
 	newParam, err := format(ap, endpoint, url, param, ver)
 	if err != nil {
 		return err
 	}
-	return http.Post(endpoint, nil, newParam, ver)
+	return http.Post(endpoint, nil, newParam, resp)
 }
 
 func format(ap *app, endpoint, url string, param interface{}, ver version) (map[string]string, error) {
