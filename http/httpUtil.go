@@ -2,33 +2,34 @@ package http
 
 import (
 	"encoding/json"
+	"errors"
 	"git.dian.so/leto/util/byte2str"
 	"io/ioutil"
 	"net/http"
+	"reflect"
 	"strings"
 )
 
 // Get
-func Get(endpoint string, header, param map[string]string, resp interface{}) error {
+func Get(url string, header, param map[string]string, resp interface{}) error {
 	var (
 		client = &http.Client{}
 		req    = &http.Request{}
 		res    = &http.Response{}
 		data   = make([]byte, 0)
 		protol = "http://"
-		url    = ""
 		err    error
 	)
-
+	if reflect.ValueOf(resp).Kind() != reflect.Ptr {
+		return errors.New("resp interface must be a pointer")
+	}
 	pstr := "?"
 	for k, v := range param {
 		pstr += k + "=" + v + "&"
 	}
 	pstr = pstr[:len(pstr)-1]
-	if !strings.HasPrefix(endpoint, "http") {
-		url = protol + endpoint + pstr
-	} else {
-		url = endpoint + pstr
+	if !strings.HasPrefix(url, "http") {
+		url = protol + url + pstr
 	}
 	if req, err = http.NewRequest("GET", url, nil); err != nil {
 		return err
@@ -49,21 +50,20 @@ func Get(endpoint string, header, param map[string]string, resp interface{}) err
 }
 
 // Post
-func Post(endpoint string, header map[string]string, payload interface{}, resp interface{}) error {
-
+func Post(url string, header map[string]string, payload interface{}, resp interface{}) error {
 	var (
 		client = &http.Client{}
 		req    = &http.Request{}
 		res    = &http.Response{}
 		data   = make([]byte, 0)
 		protol = "http://"
-		url    = ""
 		err    error
 	)
-	if !strings.HasPrefix(endpoint, "http") {
-		url = protol + endpoint
-	} else {
-		url = endpoint
+	if reflect.ValueOf(resp).Kind() != reflect.Ptr {
+		return errors.New("resp interface must be a pointer")
+	}
+	if !strings.HasPrefix(url, "http") {
+		url = protol + url
 	}
 	if data, err = json.Marshal(payload); err != nil {
 		return err
@@ -84,5 +84,4 @@ func Post(endpoint string, header map[string]string, payload interface{}, resp i
 		return err
 	}
 	return nil
-
 }

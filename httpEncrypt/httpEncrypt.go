@@ -2,20 +2,19 @@ package httpEncrypt
 
 import (
 	"encoding/json"
-	"errors"
 	"git.dian.so/leto/util/aes"
 	"git.dian.so/leto/util/base64"
 	"git.dian.so/leto/util/byte2str"
 	"git.dian.so/leto/util/http"
 	"git.dian.so/leto/util/md5"
-	"reflect"
 	"strconv"
+	"strings"
 	"time"
 )
 
 type version int
 
-var Version1 version = 1
+var ver version = 1
 
 type app struct {
 	source string
@@ -31,26 +30,36 @@ func NewApp(source, secret, salt string) *app {
 	}
 }
 
-func Get(ap *app, endpoint, url string, param interface{}, ver version, resp interface{}) error {
-	if reflect.ValueOf(resp).Kind() != reflect.Ptr {
-		return errors.New("resp interface must be a pointer")
-	}
-	newParam, err := format(ap, endpoint, url, param, ver)
-	if err != nil {
+func Get(ap *app, endpoint, url string, param interface{}, resp interface{}) error {
+	var (
+		newParam map[string]string
+		err      error
+	)
+	if newParam, err = format(ap, endpoint, url, param, ver); err != nil {
 		return err
 	}
-	return http.Get(endpoint, nil, newParam, resp)
+	if strings.HasPrefix(url, "/") {
+		url = endpoint + url
+	} else {
+		url = endpoint + "/" + url
+	}
+	return http.Get(url, nil, newParam, resp)
 }
 
-func Post(ap *app, endpoint, url string, param interface{}, ver version, resp interface{}) error {
-	if reflect.ValueOf(resp).Kind() != reflect.Ptr {
-		return errors.New("resp interface must be a pointer")
-	}
-	newParam, err := format(ap, endpoint, url, param, ver)
-	if err != nil {
+func Post(ap *app, endpoint, url string, param interface{}, resp interface{}) error {
+	var (
+		newParam map[string]string
+		err      error
+	)
+	if newParam, err = format(ap, endpoint, url, param, ver); err != nil {
 		return err
 	}
-	return http.Post(endpoint, nil, newParam, resp)
+	if strings.HasPrefix(url, "/") {
+		url = endpoint + url
+	} else {
+		url = endpoint + "/" + url
+	}
+	return http.Post(url, nil, newParam, resp)
 }
 
 func format(ap *app, endpoint, url string, param interface{}, ver version) (map[string]string, error) {
