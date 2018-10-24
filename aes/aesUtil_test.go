@@ -7,8 +7,10 @@ import (
 )
 
 func TestAesEncrypt(t *testing.T) {
-	src := getRepeatString("b", 17)
-	key := getRepeatString("a", 17)
+	//src := getRepeatString("b", 17)
+	//key := getRepeatString("a", 17)
+	src := `{"id":"123","name":"张三"}`
+	key := "apoq2rEGljmefWfP"
 	res, err := AesEncrypt([]byte(src), []byte(key), Aes128)
 	if err != nil {
 		t.Fail()
@@ -27,8 +29,8 @@ func getRepeatString(ch string, num int) string {
 }
 
 func TestAesDecrypt(t *testing.T) {
-	bstr := "snutgEYob6aShTsQFvoqsSqplsbCj1O6CBF3l2ukFVA="
-	key := "aaaaaaaaaaaaaaaa"
+	bstr := "0HBA1oqm8/os7XLKP8S7IMFWAJv/E8BKydJouHWdD8Y="
+	key := "apoq2rEGljmefWfP"
 
 	data, err := base64.Base64Decoding(bstr)
 	if err != nil {

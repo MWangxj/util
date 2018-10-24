@@ -17,14 +17,14 @@ const (
 
 // AesEncrypt aes加密
 func AesEncrypt(data, key []byte, t AesType) (res []byte, err error) {
-	data, key = aesDataDeal(data, key, t)
+	key = aesKeyDeal(key, t)
 	res, err = aesEncry(data, key)
 	return
 }
 
 // AesDecrypt aes解密
 func AesDecrypt(data, key []byte, t AesType) (res []byte, err error) {
-	data, key = aesDataDeal(data, key, t)
+	key = aesKeyDeal(key, t)
 	if res, err = aesDecry(data, key); err != nil {
 		return nil, err
 	}
@@ -43,7 +43,7 @@ func aesDecry(crypted, key []byte) ([]byte, error) {
 	return origData, nil
 }
 
-func aesDataDeal(orignData, key []byte, t AesType) (orignDataReal, keyReal []byte) {
+func aesKeyDeal(key []byte, t AesType) (keyReal []byte) {
 	keyLen := 0
 	if t == 0 {
 		keyLen = 16
@@ -54,12 +54,6 @@ func aesDataDeal(orignData, key []byte, t AesType) (orignDataReal, keyReal []byt
 	}
 	keyReal = make([]byte, keyLen)
 	copy(keyReal, key)
-	orignLen := len(orignData)
-	if orignLen%keyLen != 0 {
-		orignLen = (orignLen/keyLen + 1) * keyLen
-	}
-	orignDataReal = make([]byte, orignLen)
-	copy(orignDataReal, orignData)
 	return
 }
 
