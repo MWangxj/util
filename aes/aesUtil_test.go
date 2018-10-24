@@ -7,8 +7,8 @@ import (
 )
 
 func TestAesEncrypt(t *testing.T) {
-	src := getaesdata("b")
-	key := getaesdata("a")
+	src := getRepeatString("b", 17)
+	key := getRepeatString("a", 17)
 	res, err := AesEncrypt([]byte(src), []byte(key), Aes128)
 	if err != nil {
 		t.Fail()
@@ -17,10 +17,10 @@ func TestAesEncrypt(t *testing.T) {
 	fmt.Println(base64.Base64Encoding(res))
 }
 
-func getaesdata(a string) string {
+func getRepeatString(ch string, num int) string {
 	res := ""
-	for i := 0; i < 16; i++ {
-		res += a
+	for i := 0; i < num; i++ {
+		res += ch
 	}
 	fmt.Println(res)
 	return res
