@@ -43,6 +43,13 @@ func Get(ap *app, endpoint, url string, header map[string]string, param interfac
 	} else {
 		url = endpoint + "/" + url
 	}
+	if header == nil {
+		header = map[string]string{
+			"s": ap.source,
+		}
+	} else {
+		header["s"] = ap.source
+	}
 	return http.Get(url, header, newParam, resp)
 }
 
@@ -58,6 +65,13 @@ func Post(ap *app, endpoint, url string, header map[string]string, param interfa
 		url = endpoint + url
 	} else {
 		url = endpoint + "/" + url
+	}
+	if header == nil {
+		header = map[string]string{
+			"s": ap.source,
+		}
+	} else {
+		header["s"] = ap.source
 	}
 	return http.Post(url, header, newParam, resp)
 }
