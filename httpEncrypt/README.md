@@ -10,6 +10,6 @@
 
         httpEncrypt.NewApp (source, secret, salt string) *app
 
-        httpEncrypt.Get(ap *app, endpoint, url string, param interface{}, ver version, resp interface{}) error
+        httpEncrypt.Get (ap *app, endpoint, url string, param interface{}, ver version, resp interface{}) error
 
-        httpEncrypt.Get(ap *app, endpoint, url string, param interface{}, ver version, resp interface{}) error
+        httpEncrypt.Post (ap *app, endpoint, url string, param interface{}, ver version, resp interface{}) error
