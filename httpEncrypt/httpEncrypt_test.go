@@ -2,6 +2,8 @@ package httpEncrypt
 
 import (
 	"fmt"
+	"git.dian.so/leto/util/byte2str"
+	"net/url"
 	"testing"
 )
 
@@ -11,12 +13,15 @@ func TestGet(t *testing.T) {
 		"key":  "test",
 		"name": "guishan",
 	}
-	var res map[string]interface{}
-	if err := Get(app, "192.168.49.97:8080", "/demo", nil, mm, &res); err != nil {
+	var (
+		res []byte
+		err error
+	)
+	if res, err = Get(app, "192.168.49.97:8080/demo", nil, mm); err != nil {
 		t.Fail()
 		return
 	}
-	fmt.Println(res)
+	fmt.Println(byte2str.BytesToString(res))
 }
 
 func TestPost(t *testing.T) {
@@ -26,10 +31,28 @@ func TestPost(t *testing.T) {
 		"key":  "test",
 		"name": "guishan",
 	}
-	var res map[string]interface{}
-	if err := Post(app, "192.168.49.97:8080", "/postDemo", nil, mm, &res); err != nil {
+	var (
+		res []byte
+		err error
+	)
+	if res, err = Post(app, "192.168.49.97:8080/postDemo", nil, mm); err != nil {
 		t.Fail()
 		return
 	}
-	fmt.Println(res)
+	fmt.Println(byte2str.BytesToString(res))
+}
+
+func TestParseUrl(t *testing.T) {
+	l := "www.baidu.com/test/api"
+	u, err := url.Parse(l)
+	if err != nil {
+		t.Fail()
+		return
+	}
+	fmt.Println(u.Host)
+	fmt.Println(u.Path)
+	fmt.Println(u.Opaque)
+	fmt.Println(u.RawPath)
+	fmt.Println(u.RawQuery)
+	fmt.Println(u.Scheme)
 }

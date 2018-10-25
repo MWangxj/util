@@ -7,8 +7,8 @@ import (
 	"git.dian.so/leto/util/byte2str"
 	"git.dian.so/leto/util/http"
 	"git.dian.so/leto/util/md5"
+	"net/url"
 	"strconv"
-	"strings"
 	"time"
 )
 
@@ -30,18 +30,16 @@ func NewApp(source, secret, salt string) *app {
 	}
 }
 
-func Get(ap *app, endpoint, url string, header map[string]string, param interface{}, resp interface{}) error {
+func Get(ap *app, urlStr string, header map[string]string, param interface{}) (resp []byte, err error) {
 	var (
 		newParam map[string]string
-		err      error
+		u        *url.URL
 	)
-	if newParam, err = format(ap, endpoint, url, param, ver); err != nil {
-		return err
+	if u, err = url.Parse(urlStr); err != nil {
+		return nil, err
 	}
-	if strings.HasPrefix(url, "/") {
-		url = endpoint + url
-	} else {
-		url = endpoint + "/" + url
+	if newParam, err = format(ap, u.Path, param, ver); err != nil {
+		return nil, err
 	}
 	if header == nil {
 		header = map[string]string{
@@ -50,21 +48,19 @@ func Get(ap *app, endpoint, url string, header map[string]string, param interfac
 	} else {
 		header["s"] = ap.source
 	}
-	return http.Get(url, header, newParam, resp)
+	return http.Get(urlStr, header, newParam)
 }
 
-func Post(ap *app, endpoint, url string, header map[string]string, param interface{}, resp interface{}) error {
+func Post(ap *app, urlStr string, header map[string]string, param interface{}) (resp []byte, err error) {
 	var (
 		newParam map[string]string
-		err      error
+		u        *url.URL
 	)
-	if newParam, err = format(ap, endpoint, url, param, ver); err != nil {
-		return err
+	if u, err = url.Parse(urlStr); err != nil {
+		return nil, err
 	}
-	if strings.HasPrefix(url, "/") {
-		url = endpoint + url
-	} else {
-		url = endpoint + "/" + url
+	if newParam, err = format(ap, u.Path, param, ver); err != nil {
+		return nil, err
 	}
 	if header == nil {
 		header = map[string]string{
@@ -73,10 +69,10 @@ func Post(ap *app, endpoint, url string, header map[string]string, param interfa
 	} else {
 		header["s"] = ap.source
 	}
-	return http.Post(url, header, newParam, resp)
+	return http.Post(urlStr, header, newParam)
 }
 
-func format(ap *app, endpoint, url string, param interface{}, ver version) (map[string]string, error) {
+func format(ap *app, url string, param interface{}, ver version) (map[string]string, error) {
 	var (
 		jsData  []byte
 		ecyData []byte
