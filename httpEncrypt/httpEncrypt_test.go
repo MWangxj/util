@@ -24,6 +24,28 @@ func TestGet(t *testing.T) {
 	fmt.Println(byte2str.BytesToString(res))
 }
 
+func BenchmarkGet(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		app := NewApp("apollo", "apoq2rEGljmefWfP", "apoq2rEGljmesalt")
+		mm := map[string]string{
+			"key":  "test",
+			"name": "guishan",
+		}
+		Get(app, "192.168.49.97:8080/demo", nil, mm)
+	}
+}
+
+func BenchmarkPost(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		app := NewApp("apollo", "apoq2rEGljmefWfP", "apoq2rEGljmesalt")
+		mm := map[string]string{
+			"key":  "test",
+			"name": "guishan",
+		}
+		Post(app, "192.168.49.97:8080/demo", nil, mm)
+	}
+}
+
 func TestPost(t *testing.T) {
 
 	app := NewApp("apollo", "apoq2rEGljmefWfP", "apoq2rEGljmesalt")
