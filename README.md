@@ -49,3 +49,28 @@ go get -u -v git.dian.so/leto/util
 
     cfg.Load(filePath string, cfg interface{}) error
 
+## httpEncrypt http加密请求
+
+    1、go get -u -v git.dian.so/leto/util
+
+    2、import(
+        "git.dian.so/leto/util/httpEncrypt"
+    )
+
+    3、使用
+
+        httpEncrypt.NewApp (source, secret, salt string) *app
+
+        httpEncrypt.Do (ap *app, method HttpMethod ,urlStr string, param interface{}, ver version) (resp []byte,err error)
+
+## commonEncrypt 手动加密数据
+
+
+    import(
+        git.dian.so/leto/util/commonEncrypt
+    )
+
+    commonEncrypt.Encrypt(obj interface{}, accessKey string) (encrypt string, err error)
+    commonEncrypt.Sign(url, encryptData, timeStamp, salt, v, source string) string
+    commonEncrypt.Decrypt(encryptData, aesKey string) (map[string]interface{}, error)
+    commonEncrypt.VerifySign(url, sign, ts, encryptData, v, token, salt string) bool

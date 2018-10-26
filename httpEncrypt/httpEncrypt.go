@@ -2,6 +2,7 @@ package httpEncrypt
 
 import (
 	"encoding/json"
+	"errors"
 	"git.dian.so/leto/util/aes"
 	"git.dian.so/leto/util/base64"
 	"git.dian.so/leto/util/byte2str"
@@ -22,6 +23,24 @@ type app struct {
 	salt   string
 }
 
+type httpMethod string
+
+const (
+	HttpGet  httpMethod = "GET"
+	HttpPost            = "POST"
+)
+
+func Do(ap *app, method httpMethod, urlStr string, header map[string]string, param interface{}) (resp []byte, err error) {
+	switch method {
+	case HttpGet:
+		return get(ap, urlStr, header, param)
+	case HttpPost:
+		return post(ap, urlStr, header, param)
+	default:
+		return nil, errors.New("http method not suport")
+	}
+}
+
 func NewApp(source, secret, salt string) *app {
 	return &app{
 		source: source,
@@ -30,7 +49,7 @@ func NewApp(source, secret, salt string) *app {
 	}
 }
 
-func Get(ap *app, urlStr string, header map[string]string, param interface{}) (resp []byte, err error) {
+func get(ap *app, urlStr string, header map[string]string, param interface{}) (resp []byte, err error) {
 	var (
 		newParam map[string]string
 		u        *url.URL
@@ -51,7 +70,7 @@ func Get(ap *app, urlStr string, header map[string]string, param interface{}) (r
 	return http.Get(urlStr, header, newParam)
 }
 
-func Post(ap *app, urlStr string, header map[string]string, param interface{}) (resp []byte, err error) {
+func post(ap *app, urlStr string, header map[string]string, param interface{}) (resp []byte, err error) {
 	var (
 		newParam map[string]string
 		u        *url.URL

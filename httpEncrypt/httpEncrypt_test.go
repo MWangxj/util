@@ -17,7 +17,7 @@ func TestGet(t *testing.T) {
 		res []byte
 		err error
 	)
-	if res, err = Get(app, "192.168.49.97:8080/demo", nil, mm); err != nil {
+	if res, err = Do(app, HttpGet, "192.168.49.97:8080/demo", nil, mm); err != nil {
 		t.Fail()
 		return
 	}
@@ -31,7 +31,7 @@ func BenchmarkGet(b *testing.B) {
 			"key":  "test",
 			"name": "guishan",
 		}
-		Get(app, "192.168.49.97:8080/demo", nil, mm)
+		Do(app, HttpPost, "192.168.49.97:8080/demo", nil, mm)
 	}
 }
 
@@ -42,7 +42,7 @@ func BenchmarkPost(b *testing.B) {
 			"key":  "test",
 			"name": "guishan",
 		}
-		Post(app, "192.168.49.97:8080/demo", nil, mm)
+		Do(app, HttpPost, "192.168.49.97:8080/demo", nil, mm)
 	}
 }
 
@@ -57,7 +57,7 @@ func TestPost(t *testing.T) {
 		res []byte
 		err error
 	)
-	if res, err = Post(app, "192.168.49.97:8080/postDemo", nil, mm); err != nil {
+	if res, err = Do(app, HttpPost, "192.168.49.97:8080/postDemo", nil, mm); err != nil {
 		t.Fail()
 		return
 	}
