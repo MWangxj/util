@@ -31,7 +31,7 @@ func getRepeatString(ch string, num int) string {
 
 func TestAesDecrypt(t *testing.T) {
 	//bstr := "0HBA1oqm8/os7XLKP8S7IMFWAJv/E8BKydJouHWdD8Y="
-	bstr := "PjhVrq86lEdkJVce5ky92g05//S0WDysreGOLdpzvfk="
+	bstr := "ch6qTnjwddfqkNyr6b41PexsqxMzVQuDhvLS+nNqURTUgWPbNepKdwPJorOxg6EfXYPEfS/76xHfEC9TOJvC4tstJk37DdpSUbNKuhfCjFHpAtbAzV+2VLfGizskrpUQMg/NqrHc8VQ0h1kNF/p2dHD5HPg0LhCf2rTi/O+F4JPjpJhepqERROJxtGw0Vhx5tCpco0lDfuSWwAPtfnPaIA=="
 	key := "apoq2rEGljmefWfP"
 
 	data, err := base64.Base64Decoding(bstr)

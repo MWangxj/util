@@ -53,15 +53,22 @@ func BenchmarkPost(b *testing.B) {
 func TestPost(t *testing.T) {
 
 	app := NewApp("apollo", "apoq2rEGljmefWfP", "apoq2rEGljmesalt")
-	mm := map[string]string{
-		"key":  "test",
-		"name": "guishan",
+	//mm := map[string]string{
+	//	"key":  "test",
+	//	"name": "guishan",
+	//}
+
+	var mm struct{
+		Key string `json:"key"`
+		Name string `json:"name"`
 	}
+	mm.Key="test"
+	mm.Name="guishan"
 	var (
 		res []byte
 		err error
 	)
-	if res, err = Do(app, HttpPost, "127.0.0.1:8080/test", nil, mm); err != nil {
+	if res, err = Do(app, HttpPost, ":8080/test", nil, mm); err != nil {
 		t.Fail()
 		return
 	}
