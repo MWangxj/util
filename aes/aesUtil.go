@@ -48,7 +48,7 @@ func aesDecry(crypted, key []byte) (b []byte, err error) {
 	blockMode := cipher.NewCBCDecrypter(block, key[:blockSize])
 	origData := make([]byte, len(crypted))
 	blockMode.CryptBlocks(origData, crypted)
-	return pkcs5Subbing(origData, blockSize), nil
+	return pkcs7Subbing(origData, blockSize), nil
 }
 
 func aesKeyDeal(key []byte, t AesType) (keyReal []byte) {
@@ -71,20 +71,20 @@ func aesEncry(origData, key []byte) ([]byte, error) {
 		return nil, err
 	}
 	blockSize := block.BlockSize()
-	origData = pkcs5Padding(origData, blockSize)
+	origData = pkcs7Padding(origData, blockSize)
 	blockMode := cipher.NewCBCEncrypter(block, key[:blockSize])
 	crypted := make([]byte, len(origData))
 	blockMode.CryptBlocks(crypted, origData)
 	return crypted, nil
 }
 
-func pkcs5Padding(ciphertext []byte, blockSize int) []byte {
+func pkcs7Padding(ciphertext []byte, blockSize int) []byte {
 	padding := blockSize - len(ciphertext)%blockSize
 	padtext := bytes.Repeat([]byte{byte(padding)}, padding)
 	return append(ciphertext, padtext...)
 }
 
-func pkcs5Subbing(ciphertext []byte, blockSize int) []byte {
+func pkcs7Subbing(ciphertext []byte, blockSize int) []byte {
 	l := len(ciphertext)
 	if int(ciphertext[l-1]) > blockSize {
 		return nil
