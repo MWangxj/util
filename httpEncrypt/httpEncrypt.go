@@ -10,6 +10,7 @@ import (
 	"git.dian.so/leto/util/md5"
 	"net/url"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -31,6 +32,9 @@ const (
 )
 
 func Do(ap *app, method httpMethod, urlStr string, header map[string]string, param interface{}) (resp []byte, err error) {
+	if !strings.HasPrefix(urlStr, "http") {
+		urlStr = "http://" + urlStr
+	}
 	switch method {
 	case HttpGet:
 		return get(ap, urlStr, header, param)

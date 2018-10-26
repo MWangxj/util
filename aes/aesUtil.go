@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"crypto/aes"
 	"crypto/cipher"
+	"errors"
 	"git.dian.so/leto/util/byte2str"
 )
 
@@ -31,7 +32,14 @@ func AesDecrypt(data, key []byte, t AesType) (res []byte, err error) {
 	return byte2str.ByteDelZero(res), err
 }
 
-func aesDecry(crypted, key []byte) ([]byte, error) {
+func aesDecry(crypted, key []byte) (b []byte,err error) {
+	defer func() {
+		if r := recover(); r != nil {
+			b = nil
+			err = errors.New("parse error")
+			return
+		}
+	}()
 	block, err := aes.NewCipher(key)
 	if err != nil {
 		return nil, err

@@ -72,5 +72,5 @@ go get -u -v git.dian.so/leto/util
 
     commonEncrypt.Encrypt(obj interface{}, accessKey string) (encrypt string, err error)
     commonEncrypt.Sign(url, encryptData, timeStamp, salt, v, source string) string
-    commonEncrypt.Decrypt(encryptData, aesKey string) (map[string]interface{}, error)
+    commonEncrypt.Decrypt(encryptData, aesKey string) ([]byte, error)
     commonEncrypt.VerifySign(url, sign, ts, encryptData, v, token, salt string) bool

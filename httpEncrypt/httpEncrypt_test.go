@@ -1,8 +1,12 @@
 package httpEncrypt
 
 import (
+	"encoding/json"
 	"fmt"
+	"git.dian.so/leto/util/base64"
 	"git.dian.so/leto/util/byte2str"
+	"git.dian.so/leto/util/commonEncrypt"
+	"net/http"
 	"net/url"
 	"testing"
 )
@@ -17,7 +21,7 @@ func TestGet(t *testing.T) {
 		res []byte
 		err error
 	)
-	if res, err = Do(app, HttpGet, "192.168.49.97:8080/demo", nil, mm); err != nil {
+	if res, err = Do(app, HttpGet, "0.0.0.0:8080/test", nil, mm); err != nil {
 		t.Fail()
 		return
 	}
@@ -42,7 +46,7 @@ func BenchmarkPost(b *testing.B) {
 			"key":  "test",
 			"name": "guishan",
 		}
-		Do(app, HttpPost, "192.168.49.97:8080/demo", nil, mm)
+		Do(app, HttpPost, "127.0.0.1:8080/test", nil, mm)
 	}
 }
 
@@ -57,24 +61,41 @@ func TestPost(t *testing.T) {
 		res []byte
 		err error
 	)
-	if res, err = Do(app, HttpPost, "192.168.49.97:8080/postDemo", nil, mm); err != nil {
+	if res, err = Do(app, HttpPost, "127.0.0.1:8080/test", nil, mm); err != nil {
 		t.Fail()
 		return
 	}
 	fmt.Println(byte2str.BytesToString(res))
 }
 
-func TestParseUrl(t *testing.T) {
-	l := "www.baidu.com/test/api"
-	u, err := url.Parse(l)
+func listen() {
+	http.HandleFunc("/test", func(writer http.ResponseWriter, request *http.Request) {
+		b := make([]byte, 1<<11)
+		n, _ := request.Body.Read(b)
+		b = b[:n]
+		mm := make(map[string]string)
+		json.Unmarshal(b, &mm)
+		data, _ := base64.Base64Decoding(mm["data"])
+		m, err := commonEncrypt.Decrypt(data, "apoq2rEGljmefWfP")
+		if err != nil {
+			writer.Write(byte2str.StringToBytes(err.Error()))
+			return
+		}
+		writer.Write(m)
+	})
+	http.ListenAndServe(":8080", nil)
+}
+
+func TestListen(t *testing.T) {
+	listen()
+}
+
+func TestUrlParse(t *testing.T) {
+	u := "127.0.0.1:8080/test"
+	urlR, err := url.Parse(u)
 	if err != nil {
-		t.Fail()
+		t.Log(err)
 		return
 	}
-	fmt.Println(u.Host)
-	fmt.Println(u.Path)
-	fmt.Println(u.Opaque)
-	fmt.Println(u.RawPath)
-	fmt.Println(u.RawQuery)
-	fmt.Println(u.Scheme)
+	fmt.Println(fmt.Sprintf("%V", urlR))
 }

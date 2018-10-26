@@ -1,6 +1,7 @@
 package aes
 
 import (
+	"encoding/json"
 	"fmt"
 	"git.dian.so/leto/util/base64"
 	"testing"
@@ -29,7 +30,8 @@ func getRepeatString(ch string, num int) string {
 }
 
 func TestAesDecrypt(t *testing.T) {
-	bstr := "0HBA1oqm8/os7XLKP8S7IMFWAJv/E8BKydJouHWdD8Y="
+	//bstr := "0HBA1oqm8/os7XLKP8S7IMFWAJv/E8BKydJouHWdD8Y="
+	bstr := "PjhVrq86lEdkJVce5ky92g05//S0WDysreGOLdpzvfk="
 	key := "apoq2rEGljmefWfP"
 
 	data, err := base64.Base64Decoding(bstr)
@@ -43,4 +45,11 @@ func TestAesDecrypt(t *testing.T) {
 		return
 	}
 	fmt.Println(string(res))
+	mm := make(map[string]interface{})
+	if err := json.Unmarshal(res,&mm);err!=nil{
+		t.Fail()
+		t.Log(err)
+		return
+	}
+	fmt.Println(mm)
 }
