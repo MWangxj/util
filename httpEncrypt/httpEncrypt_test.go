@@ -76,6 +76,8 @@ func listen() {
 		mm := make(map[string]string)
 		json.Unmarshal(b, &mm)
 		data, _ := base64.Base64Decoding(mm["data"])
+		t := commonEncrypt.VerifySign(request.URL.Path,mm["sign"],mm["ts"],mm["data"],mm["v"],request.Header.Get("s"),"apoq2rEGljmesalt")
+		fmt.Println(t)
 		m, err := commonEncrypt.Decrypt(data, "apoq2rEGljmefWfP")
 		if err != nil {
 			writer.Write(byte2str.StringToBytes(err.Error()))

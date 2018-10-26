@@ -25,7 +25,7 @@ func Sign(url, encryptData, timeStamp, salt, v, source string) string {
 	data := []string{url, encryptData, timeStamp, salt, v, source}
 	dataStr := strings.Join(data, "||")
 	dataByte := byte2str.StringToBytes(dataStr)
-	return md5.Genmd5String(dataByte)
+	return md5.Genmd5String(dataByte)[:16]
 }
 
 func Decrypt(encryptData []byte, aesKey string) ([]byte, error) {
