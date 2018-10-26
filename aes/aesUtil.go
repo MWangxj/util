@@ -86,7 +86,7 @@ func pkcs5Padding(ciphertext []byte, blockSize int) []byte {
 
 func pkcs5Subbing(ciphertext []byte, blockSize int) []byte {
 	l := len(ciphertext)
-	if ciphertext[l-1] > 16 {
+	if int(ciphertext[l-1]) > blockSize {
 		return nil
 	}
 	return ciphertext[:l-int(ciphertext[l-1])]
