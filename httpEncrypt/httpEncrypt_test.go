@@ -30,7 +30,7 @@ func TestGet(t *testing.T) {
 
 func BenchmarkGet(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		app := NewApp("apollo", "apoq2rEGljmefWfP", "apoq2rEGljmesalt")
+		app := NewApp("simcode", "adsgsag2rEGljmefWfP", "dfasfhasfhuiahufd")
 		mm := map[string]string{
 			"key":  "test",
 			"name": "guishan",
@@ -52,23 +52,26 @@ func BenchmarkPost(b *testing.B) {
 
 func TestPost(t *testing.T) {
 
-	app := NewApp("apollo", "apoq2rEGljmefWfP", "apoq2rEGljmesalt")
+	app := NewApp("simcode", "adsgsag2rEGljmefWfP", "dfasfhasfhuiahufd")
 	//mm := map[string]string{
 	//	"key":  "test",
 	//	"name": "guishan",
 	//}
 
 	var mm struct{
-		Key string `json:"key"`
+		Data string `json:"data"`
 		Name string `json:"name"`
 	}
-	mm.Key="test"
+	mm.Data="test"
 	mm.Name="guishan"
 	var (
 		res []byte
 		err error
 	)
-	if res, err = Do(app, HttpPost, ":8080/test", nil, mm); err != nil {
+	head := map[string]string{
+		"Api-Key":"simcode",
+	}
+	if res, err = Do(app, HttpPost, ":23333/v1/sim/data", head, mm); err != nil {
 		t.Fail()
 		return
 	}
@@ -100,11 +103,15 @@ func TestListen(t *testing.T) {
 }
 
 func TestUrlParse(t *testing.T) {
-	u := "127.0.0.1:8080/test"
+	u := "http://127.0.0.1:8080/test?data=abc&sign=asdiufhaiu"
 	urlR, err := url.Parse(u)
 	if err != nil {
 		t.Log(err)
 		return
 	}
+	val,_ := url.ParseQuery(urlR.RawQuery)
+	d := val.Get("data")
+	s := val.Get("sign")
+	fmt.Println(d,s)
 	fmt.Println(fmt.Sprintf("%V", urlR))
 }
