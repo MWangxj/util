@@ -66,10 +66,10 @@ func get(ap *app, urlStr string, header map[string]string, param interface{}) (r
 	}
 	if header == nil {
 		header = map[string]string{
-			"s": ap.source,
+			"token": ap.source,
 		}
 	} else {
-		header["s"] = ap.source
+		header["token"] = ap.source
 	}
 	return http.Get(urlStr, header, newParam)
 }
@@ -87,10 +87,10 @@ func post(ap *app, urlStr string, header map[string]string, param interface{}) (
 	}
 	if header == nil {
 		header = map[string]string{
-			"s": ap.source,
+			"token": ap.source,
 		}
 	} else {
-		header["s"] = ap.source
+		header["token"] = ap.source
 	}
 	return http.Post(urlStr, header, newParam)
 }
