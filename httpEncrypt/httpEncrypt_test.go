@@ -21,7 +21,7 @@ func TestGet(t *testing.T) {
 		res []byte
 		err error
 	)
-	if res, err = Do(app, HttpGet, "0.0.0.0:8080/test", nil, mm); err != nil {
+	if res, err = Do(app, HttpGet, "192.168.49.97:8080/demo", nil, mm); err != nil {
 		t.Fail()
 		return
 	}
@@ -86,7 +86,7 @@ func listen() {
 		mm := make(map[string]string)
 		json.Unmarshal(b, &mm)
 		data, _ := base64.Base64UrlDecoding(mm["data"])
-		t := commonEncrypt.VerifySign(request.URL.Path,mm["sign"],mm["ts"],mm["data"],mm["v"],request.Header.Get("s"),"apoq2rEGljmesalt")
+		t := commonEncrypt.VerifySign(request.URL.Path,mm["sign"],mm["ts"],mm["data"],mm["v"],request.Header.Get("token"),"apoq2rEGljmesalt")
 		fmt.Println(t)
 		m, err := commonEncrypt.Decrypt(data, "apoq2rEGljmefWfP")
 		if err != nil {
