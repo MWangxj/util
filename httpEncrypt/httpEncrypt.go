@@ -110,7 +110,7 @@ func format(ap *app, url string, param interface{}, ver version) (map[string]str
 	}
 	urlByte := byte2str.StringToBytes(url)
 	combineByte := byte2str.StringToBytes("||")
-	baseByte := byte2str.StringToBytes(base64.Base64Encoding(ecyData))
+	baseByte := byte2str.StringToBytes(base64.Base64UrlEncodeing(ecyData))
 	ts := strconv.Itoa(int(time.Now().UnixNano() / 1000))
 	tsByte := byte2str.StringToBytes(ts)
 	sourceByte := byte2str.StringToBytes(ap.source)
@@ -119,7 +119,7 @@ func format(ap *app, url string, param interface{}, ver version) (map[string]str
 	comByte := byte2str.BytesCombine(urlByte, combineByte, baseByte, combineByte, tsByte, combineByte, saltByte, combineByte, versionByte, combineByte, sourceByte)
 	md5Str = md5.Genmd5String(comByte)
 	newParam := map[string]string{
-		"data": base64.Base64Encoding(ecyData),
+		"data": base64.Base64UrlEncodeing(ecyData),
 		"ts":   ts,
 		"sign": md5Str[:16],
 		"v":    strconv.Itoa(int(ver)),

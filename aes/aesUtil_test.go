@@ -17,7 +17,7 @@ func TestAesEncrypt(t *testing.T) {
 		t.Fail()
 		return
 	}
-	fmt.Println(base64.Base64Encoding(res))
+	fmt.Println(base64.Base64UrlEncodeing(res))
 }
 
 func getRepeatString(ch string, num int) string {
@@ -34,7 +34,7 @@ func TestAesDecrypt(t *testing.T) {
 	bstr := "ch6qTnjwddfqkNyr6b41PexsqxMzVQuDhvLS+nNqURTUgWPbNepKdwPJorOxg6EfXYPEfS/76xHfEC9TOJvC4tstJk37DdpSUbNKuhfCjFHpAtbAzV+2VLfGizskrpUQMg/NqrHc8VQ0h1kNF/p2dHD5HPg0LhCf2rTi/O+F4JPjpJhepqERROJxtGw0Vhx5tCpco0lDfuSWwAPtfnPaIA=="
 	key := "apoq2rEGljmefWfP"
 
-	data, err := base64.Base64Decoding(bstr)
+	data, err := base64.Base64UrlDecoding(bstr)
 	if err != nil {
 		t.Fail()
 		return
