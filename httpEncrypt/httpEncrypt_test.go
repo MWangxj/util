@@ -81,6 +81,20 @@ func TestPost(t *testing.T) {
 
 func listen() {
 	http.HandleFunc("/test", func(writer http.ResponseWriter, request *http.Request) {
+
+		uri := "http://"+request.RemoteAddr+request.RequestURI
+
+		fmt.Println(uri)
+		urlR, err := url.Parse(uri)
+		if err != nil {
+			return
+		}
+		val, _ := url.ParseQuery(urlR.RawQuery)
+		d := val.Get("data")
+		s := val.Get("sign")
+		fmt.Println(d, s)
+		fmt.Println(fmt.Sprintf("%V", urlR))
+
 		b := make([]byte, 1<<11)
 		n, _ := request.Body.Read(b)
 		b = b[:n]
@@ -101,7 +115,7 @@ func listen() {
 
 func TestDO(t *testing.T) {
 
-	data := "i5EjN81O7-vtA9KnrVWsxyZoKlmLUrSBgU-8yxxJaMuK_pXwf1aNUTf20m9B7FCdHYN61PwcR8j25Ir_VoFSy2XPbI29scT5Vma1o2fsIwYdWharXjB_cGvE7aV_O-DMS4ZRDYn0uEqwDsPARJeWE1Y-0UjR-mjuF_BCj1izoz3ANd4tONLsIsEi6jE1RElgWB1CG71a94EyuQH9ui2SJg=="
+	data := "i5EjN81O7-vtA9KnrVWsxyZoKlmLUrSBgU-8yxxJaMuK_pXwf1aNUTf20m9B7FCdHYN61PwcR8j25Ir_VoFSy2XPbI29scT5Vma1o2fsIwYdWharXjB_cGvE7aV_O-DMS4ZRDYn0uEqwDsPARJeWE1Y-0UjR-mjuF_BCj1izoz3ANd4tONLsIsEi6jE1RElgWB1CG71a94EyuQH9ui2SJg"
 	t.Log(len(data))
 	b, err := base64.Base64UrlDecoding(data)
 	if err != nil {
