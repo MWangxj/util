@@ -87,7 +87,7 @@ func pkcs7Padding(ciphertext []byte, blockSize int) []byte {
 func pkcs7Subbing(ciphertext []byte, blockSize int) []byte {
 	l := len(ciphertext)
 	if int(ciphertext[l-1]) > blockSize {
-		return nil
+		return ciphertext
 	}
 	return ciphertext[:l-int(ciphertext[l-1])]
 }

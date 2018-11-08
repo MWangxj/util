@@ -52,7 +52,7 @@ func BenchmarkPost(b *testing.B) {
 
 func TestPost(t *testing.T) {
 
-	app := NewApp("simcode", "adsgsag2rEGljmefWfP", "dfasfhasfhuiahufd")
+	app := NewApp("dandelion", "adsgsag2rEGljmefWfP", "apoq2rEGljmesalt")
 	//mm := map[string]string{
 	//	"key":  "test",
 	//	"name": "guishan",
@@ -69,9 +69,10 @@ func TestPost(t *testing.T) {
 		err error
 	)
 	head := map[string]string{
-		"Api-Key":"simcode",
+		"token":"simcode",
 	}
-	if res, err = Do(app, HttpPost, ":23333/v1/sim/data", head, mm); err != nil {
+	// 192.168.48.189:8080/v2/device/syncInfo
+	if res, err = Do(app, HttpPost, "192.168.48.189:8080/v2/device/syncInfo", head, mm); err != nil {
 		t.Fail()
 		return
 	}
