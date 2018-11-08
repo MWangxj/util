@@ -99,6 +99,29 @@ func listen() {
 	http.ListenAndServe(":8080", nil)
 }
 
+func TestDO(t *testing.T)  {
+
+	data := "i5EjN81O7-vtA9KnrVWsxyZoKlmLUrSBgU-8yxxJaMuK_pXwf1aNUTf20m9B7FCdHYN61PwcR8j25Ir_VoFSy2XPbI29scT5Vma1o2fsIwYdWharXjB_cGvE7aV_O-DMS4ZRDYn0uEqwDsPARJeWE1Y-0UjR-mjuF_BCj1izoz3ANd4tONLsIsEi6jE1RElgWB1CG71a94EyuQH9ui2SJg=="
+	t.Log(len(data))
+	b,err :=base64.Base64UrlDecoding(data)
+	if err!=nil {
+		t.Fail()
+		return
+	}
+	b,err= commonEncrypt.Decrypt(b,"apoq2rEGljmefWfP")
+	if err != nil {
+		t.Fail()
+		return
+	}
+	t.Log(byte2str.BytesToString(b))
+}
+
+func TestBase64(t *testing.T)  {
+	data := `{"password":"ba62addf26df0cd3","secKey":"007727178f52d397","cloudId":"b32c131869449025085688","deviceInfoId":"1261541","deviceNo":"869449025085688"}`
+	str :=base64.Base64UrlEncodeing(byte2str.StringToBytes(data))
+	t.Log(str)
+}
+
 func TestListen(t *testing.T) {
 	listen()
 }
