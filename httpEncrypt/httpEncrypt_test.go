@@ -58,18 +58,18 @@ func TestPost(t *testing.T) {
 	//	"name": "guishan",
 	//}
 
-	var mm struct{
+	var mm struct {
 		Data string `json:"data"`
 		Name string `json:"name"`
 	}
-	mm.Data="test"
-	mm.Name="guishan"
+	mm.Data = "test"
+	mm.Name = "guishan"
 	var (
 		res []byte
 		err error
 	)
 	head := map[string]string{
-		"token":"simcode",
+		"token": "simcode",
 	}
 	// 192.168.48.189:8080/v2/device/syncInfo"
 	if res, err = Do(app, HttpPost, "192.168.48.189:8080/v2/device/syncInfo", head, mm); err != nil {
@@ -87,7 +87,7 @@ func listen() {
 		mm := make(map[string]string)
 		json.Unmarshal(b, &mm)
 		data, _ := base64.Base64UrlDecoding(mm["data"])
-		t := commonEncrypt.VerifySign(request.URL.Path,mm["sign"],mm["ts"],mm["data"],mm["v"],request.Header.Get("token"),"apoq2rEGljmesalt")
+		t := commonEncrypt.VerifySign(request.URL.Path, mm["sign"], mm["ts"], mm["data"], mm["v"], request.Header.Get("token"), "apoq2rEGljmesalt")
 		fmt.Println(t)
 		m, err := commonEncrypt.Decrypt(data, "adsgsag2rEGljmefWfP")
 		if err != nil {
@@ -99,16 +99,16 @@ func listen() {
 	http.ListenAndServe(":8080", nil)
 }
 
-func TestDO(t *testing.T)  {
+func TestDO(t *testing.T) {
 
 	data := "i5EjN81O7-vtA9KnrVWsxyZoKlmLUrSBgU-8yxxJaMuK_pXwf1aNUTf20m9B7FCdHYN61PwcR8j25Ir_VoFSy2XPbI29scT5Vma1o2fsIwYdWharXjB_cGvE7aV_O-DMS4ZRDYn0uEqwDsPARJeWE1Y-0UjR-mjuF_BCj1izoz3ANd4tONLsIsEi6jE1RElgWB1CG71a94EyuQH9ui2SJg=="
 	t.Log(len(data))
-	b,err :=base64.Base64UrlDecoding(data)
-	if err!=nil {
+	b, err := base64.Base64UrlDecoding(data)
+	if err != nil {
 		t.Fail()
 		return
 	}
-	b,err= commonEncrypt.Decrypt(b,"apoq2rEGljmefWfP")
+	b, err = commonEncrypt.Decrypt(b, "apoq2rEGljmefWfP")
 	if err != nil {
 		t.Fail()
 		return
@@ -116,10 +116,22 @@ func TestDO(t *testing.T)  {
 	t.Log(byte2str.BytesToString(b))
 }
 
-func TestBase64(t *testing.T)  {
+func TestBase64(t *testing.T) {
 	data := `{"password":"ba62addf26df0cd3","secKey":"007727178f52d397","cloudId":"b32c131869449025085688","deviceInfoId":"1261541","deviceNo":"869449025085688"}`
-	str :=base64.Base64UrlEncodeing(byte2str.StringToBytes(data))
+	str := base64.Base64UrlEncodeing(byte2str.StringToBytes(data))
 	t.Log(str)
+
+	u := "http://127.0.0.1:8080/test?data=" + str + "&sign=asdiufhaiu"
+	urlR, err := url.Parse(u)
+	if err != nil {
+		t.Log(err)
+		return
+	}
+	val, _ := url.ParseQuery(urlR.RawQuery)
+	d := val.Get("data")
+	s := val.Get("sign")
+	fmt.Println(d, s)
+	fmt.Println(fmt.Sprintf("%V", urlR))
 }
 
 func TestListen(t *testing.T) {
@@ -133,9 +145,9 @@ func TestUrlParse(t *testing.T) {
 		t.Log(err)
 		return
 	}
-	val,_ := url.ParseQuery(urlR.RawQuery)
+	val, _ := url.ParseQuery(urlR.RawQuery)
 	d := val.Get("data")
 	s := val.Get("sign")
-	fmt.Println(d,s)
+	fmt.Println(d, s)
 	fmt.Println(fmt.Sprintf("%V", urlR))
 }
