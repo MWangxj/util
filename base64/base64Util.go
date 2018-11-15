@@ -27,6 +27,9 @@ func Base64Decoding(s string) ([]byte, error) {
 	if len(s) == 0 {
 		return nil, errors.New("src must be not null")
 	}
+	if l := len(s) % 4; l != 0 {
+		s += strings.Repeat("=", 4-l)
+	}
 	return base64.StdEncoding.DecodeString(s)
 }
 
