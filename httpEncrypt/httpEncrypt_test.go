@@ -52,27 +52,32 @@ func BenchmarkPost(b *testing.B) {
 
 func TestPost(t *testing.T) {
 
-	app := NewApp("dandelion", "apoq2rEGljmefWfP", "apoq2rEGljmesalt")
+	app := NewApp("simcode", "adsgsag2rEGljmefWfP", "dfasfhasfhuiahufd")
 	//mm := map[string]string{
 	//	"key":  "test",
 	//	"name": "guishan",
 	//}
 
 	var mm struct {
-		Data string `json:"data"`
-		Name string `json:"name"`
+		Param map[string]string `json:"param"`
+		Index int               `json:"index"`
+		EbUrl string            `json:"eb_url"`
 	}
-	mm.Data = "test"
-	mm.Name = "guishan"
+	mm.Param = make(map[string]string)
+	mm.Param["iccid"] = "898607B2111790002183"
+	mm.Param["card_info"] = "898607B2111790002183"
+	mm.Param["type"] = "2"
+	mm.EbUrl = "userstatusrealsingle"
 	var (
 		res []byte
 		err error
 	)
 	head := map[string]string{
-		"token": "simcode",
+		"Api-Key": "simcode",
 	}
 	// 192.168.48.189:8080/v2/device/syncInfo"
-	if res, err = Do(app, HttpPost, "192.168.48.189:8080/v2/device/syncInfo", head, mm); err != nil {
+	// 59.110.53.169
+	if res, err = Do(app, HttpPost, "59.110.53.169:23333/v1/sim/siminfo", head, mm); err != nil {
 		t.Fail()
 		return
 	}
@@ -82,7 +87,7 @@ func TestPost(t *testing.T) {
 func listen() {
 	http.HandleFunc("/test", func(writer http.ResponseWriter, request *http.Request) {
 
-		uri := "http://"+request.RemoteAddr+request.RequestURI
+		uri := "http://" + request.RemoteAddr + request.RequestURI
 
 		fmt.Println(uri)
 		urlR, err := url.Parse(uri)
