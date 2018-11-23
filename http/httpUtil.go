@@ -23,7 +23,7 @@ func Get(url string, header, param map[string]string) (resp []byte, err error) {
 	pstr = pstr[:len(pstr)-1]
 	if !strings.HasPrefix(url, "http") {
 		url = protol + url + pstr
-	}else {
+	} else {
 		url += pstr
 	}
 	if req, err = http.NewRequest("GET", url, nil); err != nil {

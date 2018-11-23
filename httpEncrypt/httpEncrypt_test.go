@@ -50,7 +50,84 @@ func BenchmarkPost(b *testing.B) {
 	}
 }
 
+type SimInfo struct {
+	NetInfo
+	CardProp
+}
+
+// NetInfo 网络信息
+type NetInfo struct {
+	Vendor  *int `json:"vendor"`
+	Company *int `json:"company"`
+}
+
+type CardProp struct {
+	Iccid  string `json:"iccid"`
+	Msisdn string `json:"msisdn"`
+	Imsi   string `json:"imsi"`
+}
+type SimProdInfo struct {
+	SimInfo
+	ProdInfos []ProdInfo `json:"prodinfos,prod_infos"`
+}
+type ProdInfo struct {
+	ProdId          string `json:"prodid,prod_id"`
+	ProdName        string `json:"prodname,prod_name"`
+	ProdInfo        string `json:"prodInfo,prod_info"`
+	ProdInsteffTime string `json:"prodinstefftime,prod_inst_eff-time"`
+	ProdInstExptime string `json:"prodinstexptime,prod_inst_exp_time"`
+	ProdGprs
+	Sign string `json:"sign"`
+}
+type ProdGprs struct {
+	Total int `json:"total,gprsTotal"`
+	Used  int `json:"used,gprsUsed"`
+	Left  int `json:"left,gprsLeft"`
+}
+
 func TestPost(t *testing.T) {
+
+	app := NewApp("simcode", "adsgsag2rEGljmefWfP", "dfasfhasfhuiahufd")
+	//mm := map[string]string{
+	//	"key":  "test",
+	//	"name": "guishan",
+	//}
+
+	var mm struct {
+		Param map[string]string `json:"param"`
+		Index int               `json:"index"`
+		EbUrl string            `json:"eb_url"`
+		Info  []SimInfo         `json:"info"`
+	}
+	mm.Param = make(map[string]string)
+	mm.Param["iccid"] = "898607b2111790000743"
+	//mm.Param["queryDate"]="20181119"
+	//mm.Param["card_info"] = "898607B2111790002183"
+	//mm.Param["type"]="2"
+	mm.EbUrl = "cardinfo"
+	mm.Index = 0
+	sim := &SimInfo{}
+	sim.Msisdn = "1064724339193"
+	sim.Iccid = "898607B2111790002183"
+	sim.Imsi = "460041243302183"
+	mm.Info = []SimInfo{*sim}
+	var (
+		res []byte
+		err error
+	)
+	head := map[string]string{
+		"Api-Key": "simcode",
+	}
+	// 192.168.48.189:8080/v2/device/syncInfo"
+	// 59.110.53.169
+	if res, err = Do(app, HttpPost, "59.110.53.169:23333/v1/sim/info", head, mm); err != nil {
+		t.Fail()
+		return
+	}
+	fmt.Println(byte2str.BytesToString(res))
+}
+
+func TestSimInfo(t *testing.T) {
 
 	app := NewApp("simcode", "adsgsag2rEGljmefWfP", "dfasfhasfhuiahufd")
 	//mm := map[string]string{
@@ -64,10 +141,12 @@ func TestPost(t *testing.T) {
 		EbUrl string            `json:"eb_url"`
 	}
 	mm.Param = make(map[string]string)
-	mm.Param["iccid"] = "898607B2111790002183"
-	mm.Param["card_info"] = "898607B2111790002183"
-	mm.Param["type"] = "2"
-	mm.EbUrl = "userstatusrealsingle"
+	//mm.Param["iccid"] = "898607b2111790000743"
+	//mm.Param["queryDate"]="20181119"
+	mm.Param["card_info"] = "1064724339193"
+	mm.Param["type"] = "0"
+	mm.EbUrl = "cardinfo"
+	mm.Index = 0
 	var (
 		res []byte
 		err error
@@ -77,7 +156,39 @@ func TestPost(t *testing.T) {
 	}
 	// 192.168.48.189:8080/v2/device/syncInfo"
 	// 59.110.53.169
-	if res, err = Do(app, HttpPost, "59.110.53.169:23333/v1/sim/siminfo", head, mm); err != nil {
+	if res, err = Do(app, HttpPost, "59.110.53.169:23333/v1/sim/info", head, mm); err != nil {
+		t.Fail()
+		return
+	}
+	fmt.Println(byte2str.BytesToString(res))
+}
+
+func TestSimImport(t *testing.T) {
+	app := NewApp("simcode", "adsgsag2rEGljmefWfP", "dfasfhasfhuiahufd")
+	//mm := map[string]string{
+	//	"key":  "test",
+	//	"name": "guishan",
+	//}
+
+	var cards =  struct {
+		Info []CardProp `json:"info"`
+	}{}
+	card := CardProp{
+		Iccid:"898607B2111790002183",
+		Imsi:"460041243302183",
+		Msisdn:"1064724339193",
+	}
+	cards.Info=[]CardProp{card}
+	var (
+		res []byte
+		err error
+	)
+	head := map[string]string{
+		"Api-Key": "simcode",
+	}
+	// 192.168.48.189:8080/v2/device/syncInfo"
+	// 59.110.53.169
+	if res, err = Do(app, HttpPost, "59.110.53.169:23333/v1/sim/import", head, cards); err != nil {
 		t.Fail()
 		return
 	}
