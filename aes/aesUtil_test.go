@@ -34,7 +34,7 @@ func TestAesDecrypt(t *testing.T) {
 	bstr := "ch6qTnjwddfqkNyr6b41PexsqxMzVQuDhvLS+nNqURTUgWPbNepKdwPJorOxg6EfXYPEfS/76xHfEC9TOJvC4tstJk37DdpSUbNKuhfCjFHpAtbAzV+2VLfGizskrpUQMg/NqrHc8VQ0h1kNF/p2dHD5HPg0LhCf2rTi/O+F4JPjpJhepqERROJxtGw0Vhx5tCpco0lDfuSWwAPtfnPaIA=="
 	key := "apoq2rEGljmefWfP"
 
-	data, err := base64.Base64UrlDecoding(bstr)
+	data, err := base64.Base64Decoding(bstr)
 	if err != nil {
 		t.Fail()
 		return
@@ -52,4 +52,20 @@ func TestAesDecrypt(t *testing.T) {
 		return
 	}
 	fmt.Println(mm)
+}
+
+func TestAesEncrypt2(t *testing.T) {
+	str := "YQvFyy5dIshSgxsAXgWg9IjkzoC1WH4iL9weidNDHbLQ2w0aK+I1OD7QcSgb0W3e+Md5+o3snDfk/zyOxFTMOvQeADeqW9yWSc44Vs2HdinhZNR52h6UWL7s6MHsqV9qvl4vXwvismtQFXZQGHVfv31lkdUrDocHB+P7+wnDo8GA4o6y2TI7dycf2TCcdLejavVzPFnQvHQV9grkFwdisbyfwkRsQ9uE4sicHT6NBs8="
+	key := "4fe281fac41b9b74"
+	data, err := base64.Base64Decoding(str)
+	if err != nil {
+		t.Fail()
+		return
+	}
+	res, err := AesDecrypt(data, []byte(key), Aes128)
+	if err != nil {
+		t.Fail()
+		return
+	}
+	fmt.Println(string(res))
 }

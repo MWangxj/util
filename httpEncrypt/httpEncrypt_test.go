@@ -8,6 +8,8 @@ import (
 	"git.dian.so/leto/util/commonEncrypt"
 	"net/http"
 	"net/url"
+	`os`
+	`strings`
 	"testing"
 )
 
@@ -65,6 +67,7 @@ type CardProp struct {
 	Iccid  string `json:"iccid"`
 	Msisdn string `json:"msisdn"`
 	Imsi   string `json:"imsi"`
+	Vendor int    `json:"vendor"`
 }
 type SimProdInfo struct {
 	SimInfo
@@ -100,12 +103,12 @@ func TestPost(t *testing.T) {
 		Info  []SimInfo         `json:"info"`
 	}
 	mm.Param = make(map[string]string)
-	mm.Param["iccid"] = "898607b2111790000743"
+	mm.Param["iccid"] = "898607B9101700026065"
 	//mm.Param["queryDate"]="20181119"
 	//mm.Param["card_info"] = "898607B2111790002183"
 	//mm.Param["type"]="2"
-	mm.EbUrl = "cardinfo"
-	mm.Index = 0
+	mm.EbUrl = "querycardprodinfo"
+	mm.Index = 2
 	sim := &SimInfo{}
 	sim.Msisdn = "1064724339193"
 	sim.Iccid = "898607B2111790002183"
@@ -120,7 +123,7 @@ func TestPost(t *testing.T) {
 	}
 	// 192.168.48.189:8080/v2/device/syncInfo"
 	// 59.110.53.169
-	if res, err = Do(app, HttpPost, "59.110.53.169:23333/v1/sim/info", head, mm); err != nil {
+	if res, err = Do(app, HttpPost, "10.25.132.238:9001/v1/sim/info", head, mm); err != nil {
 		t.Fail()
 		return
 	}
@@ -137,16 +140,13 @@ func TestSimInfo(t *testing.T) {
 
 	var mm struct {
 		Param map[string]string `json:"param"`
-		Index int               `json:"index"`
-		EbUrl string            `json:"eb_url"`
+		//Index int               `json:"index"`
+		//EbUrl string            `json:"eb_url"`
 	}
 	mm.Param = make(map[string]string)
-	//mm.Param["iccid"] = "898607b2111790000743"
+	//mm.Param["iccid"] = "89860404101800021501"
 	//mm.Param["queryDate"]="20181119"
-	mm.Param["card_info"] = "1064724339193"
-	mm.Param["type"] = "0"
-	mm.EbUrl = "cardinfo"
-	mm.Index = 0
+	mm.Param["msisdn"] = "1064791576065"
 	var (
 		res []byte
 		err error
@@ -156,11 +156,29 @@ func TestSimInfo(t *testing.T) {
 	}
 	// 192.168.48.189:8080/v2/device/syncInfo"
 	// 59.110.53.169
-	if res, err = Do(app, HttpPost, "59.110.53.169:23333/v1/sim/info", head, mm); err != nil {
+	if res, err = Do(app, HttpPost, "10.25.132.238:9001/v1/sim/cardprod", head, mm); err != nil {
 		t.Fail()
 		return
 	}
 	fmt.Println(byte2str.BytesToString(res))
+}
+
+func readFile(fp string) (string, error) {
+	f, err := os.Open(fp)
+	defer f.Close()
+	if err != nil {
+		return "", err
+	}
+	str := ""
+	buf := make([]byte, 1024)
+	for {
+		n, _ := f.Read(buf)
+		if 0 == n {
+			break
+		}
+		str += byte2str.BytesToString(buf[:n])
+	}
+	return str, nil
 }
 
 func TestSimImport(t *testing.T) {
@@ -170,15 +188,27 @@ func TestSimImport(t *testing.T) {
 	//	"name": "guishan",
 	//}
 
-	var cards =  struct {
+	var cards = struct {
 		Info []CardProp `json:"info"`
 	}{}
-	card := CardProp{
-		Iccid:"898607B2111790002183",
-		Imsi:"460041243302183",
-		Msisdn:"1064724339193",
+
+	str, er := readFile("/Users/apple/Documents/sim201808002w.txt")
+	if er != nil {
+		t.Fail()
+		return
 	}
-	cards.Info=[]CardProp{card}
+	strArr := strings.Split(str, ",")
+
+	for _, s := range strArr {
+		if len(s) != 13 {
+			continue
+		}
+		card := CardProp{
+			Msisdn: s,
+			Vendor: 0,
+		}
+		cards.Info = append(cards.Info, card)
+	}
 	var (
 		res []byte
 		err error
@@ -189,6 +219,38 @@ func TestSimImport(t *testing.T) {
 	// 192.168.48.189:8080/v2/device/syncInfo"
 	// 59.110.53.169
 	if res, err = Do(app, HttpPost, "59.110.53.169:23333/v1/sim/import", head, cards); err != nil {
+		t.Fail()
+		return
+	}
+	fmt.Println(byte2str.BytesToString(res))
+}
+
+func TestSimGetList(t *testing.T) {
+	app := NewApp("simcode", "adsgsag2rEGljmefWfP", "dfasfhasfhuiahufd")
+	//mm := map[string]string{
+	//	"key":  "test",
+	//	"name": "guishan",
+	//}
+
+	var query = struct {
+		Msisdn string
+		//Start  int
+		//End    int
+	}{}
+	//query.Start=0
+	//query.End=20
+	query.Msisdn="1440068600074"
+
+	var (
+		res []byte
+		err error
+	)
+	head := map[string]string{
+		"Api-Key": "simcode",
+	}
+	// 192.168.48.189:8080/v2/device/syncInfo"
+	// 59.110.53.169
+	if res, err = Do(app,HttpPost, "59.110.53.169:23333/v1/sim/onoffstatus", head, query); err != nil {
 		t.Fail()
 		return
 	}

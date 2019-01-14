@@ -18,6 +18,8 @@ type version int
 
 var ver version = 1
 
+var App *app
+
 type app struct {
 	source string
 	secret string
