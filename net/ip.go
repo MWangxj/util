@@ -1,6 +1,7 @@
 package net
 
 import (
+	`fmt`
 	`net`
 	`os`
 )
@@ -14,6 +15,7 @@ func GetIntranetIp() net.IP {
 
 	for _, address := range addrs {
 
+		fmt.Println(address.String())
 		// 检查ip地址判断是否回环地址
 		if ipnet, ok := address.(*net.IPNet); ok && !ipnet.IP.IsLoopback() {
 			if ipnet.IP.To4() != nil {

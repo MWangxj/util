@@ -146,7 +146,7 @@ func TestSimInfo(t *testing.T) {
 	mm.Param = make(map[string]string)
 	//mm.Param["iccid"] = "89860404101800021501"
 	//mm.Param["queryDate"]="20181119"
-	mm.Param["msisdn"] = "1064791576065"
+	mm.Param["msisdn"] = "1064791990559"
 	var (
 		res []byte
 		err error
@@ -156,7 +156,7 @@ func TestSimInfo(t *testing.T) {
 	}
 	// 192.168.48.189:8080/v2/device/syncInfo"
 	// 59.110.53.169
-	if res, err = Do(app, HttpPost, "10.25.132.238:9001/v1/sim/cardprod", head, mm); err != nil {
+	if res, err = Do(app, HttpPost, "simcode.dian.so/v1/sim/cardprod", head, mm); err != nil {
 		t.Fail()
 		return
 	}
@@ -239,7 +239,7 @@ func TestSimGetList(t *testing.T) {
 	}{}
 	//query.Start=0
 	//query.End=20
-	query.Msisdn="1440068600074"
+	query.Msisdn="1064791990559"
 
 	var (
 		res []byte
@@ -250,10 +250,15 @@ func TestSimGetList(t *testing.T) {
 	}
 	// 192.168.48.189:8080/v2/device/syncInfo"
 	// 59.110.53.169
-	if res, err = Do(app,HttpPost, "59.110.53.169:23333/v1/sim/onoffstatus", head, query); err != nil {
+	if res, err = Do(app,HttpPost, "simcode.dian.so/v1/sim/onoffstatus", head, query); err != nil {
 		t.Fail()
 		return
 	}
+
+	//if res, err = Do(app,HttpGet, "10.45.147.5:9001/v1/sim/prods", head, query); err != nil {
+	//	t.Fail()
+	//	return
+	//}
 	fmt.Println(byte2str.BytesToString(res))
 }
 
