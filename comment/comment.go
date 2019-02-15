@@ -60,6 +60,7 @@ func GetFileLine(filename string) (err error) {
 		}
 		if regFunc.Match([]byte(line)) {
 			fi := parseFuncInfo(line)
+			/*
 			fc += "// struct " + fi.StructName + "\r\n"
 			if len(fi.Params) == 0 || fi.Params[0] == "" {
 				fc += "// param null \r\n"
@@ -74,7 +75,7 @@ func GetFileLine(filename string) (err error) {
 				for _, rt := range fi.Returns {
 					fc += "// return " + rt + "\r\n"
 				}
-			}
+			}*/
 			fc += "// " + fi.FuncName + "\r\n"
 		}
 		if regComm.Match([]byte(line)) {
