@@ -8,9 +8,6 @@ import (
 	"sync"
 )
 
-// struct 
-// param null 
-// return null 
 // main
 func main() {
 	pkg := flag.String("dir", ".", "USAGE [-dir = .] to choose package file")

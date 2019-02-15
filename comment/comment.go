@@ -30,7 +30,7 @@ func GetGoFileListByDir(pathname string) (fileNames []string, err error) {
 				//fileNames = append(fileNames, path)
 				return nil
 			} else {
-				if strings.HasSuffix(path, ".go") && !strings.Contains(path, "\\vendor\\") {
+				if strings.HasSuffix(path, ".go") && !strings.Contains(path, "vendor") {
 					fileNames = append(fileNames, path)
 				}
 			}
@@ -60,8 +60,7 @@ func GetFileLine(filename string) (err error) {
 		}
 		if regFunc.Match([]byte(line)) {
 			fi := parseFuncInfo(line)
-			/*
-			fc += "// struct " + fi.StructName + "\r\n"
+			/*fc += "// struct " + fi.StructName + "\r\n"
 			if len(fi.Params) == 0 || fi.Params[0] == "" {
 				fc += "// param null \r\n"
 			} else {
