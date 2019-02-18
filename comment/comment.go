@@ -50,12 +50,13 @@ func GetFileLine(filename string) (err error) {
 		return err
 	}
 	regFunc := regexp.MustCompile(`^func.*{\n`)
-	regComm := regexp.MustCompile(`^[//]+[\w,\W]*`)
+	regComm := regexp.MustCompile(`^[/]{2}[\w,\W]*`)
 	rd := bufio.NewReader(f)
 	fc := ""
 	for {
 		line, err := rd.ReadString('\n')
 		if err != nil || io.EOF == err {
+			fc += line
 			break
 		}
 		if regFunc.Match([]byte(line)) {
