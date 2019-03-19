@@ -51,6 +51,7 @@ func GetFileLine(filename string) (err error) {
 	}
 	regFunc := regexp.MustCompile(`^func.*{\n`)
 	regComm := regexp.MustCompile(`^[/]{2}[\w,\W]*`)
+	regStruct := regexp.MustCompile(`^type [\w,_]*[struct][ ]+{`)
 	rd := bufio.NewReader(f)
 	fc := ""
 	for {
@@ -77,9 +78,14 @@ func GetFileLine(filename string) (err error) {
 				}
 			}*/
 			fc += "// " + fi.FuncName + "\r\n"
+			continue
 		}
 		if regComm.Match([]byte(line)) {
 			line = ""
+			continue
+		}
+		if regStruct.Match([]byte(line)) {
+
 		}
 		fc += line
 	}
