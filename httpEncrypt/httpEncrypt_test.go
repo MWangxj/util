@@ -3,9 +3,9 @@ package httpEncrypt
 import (
 	"encoding/json"
 	"fmt"
-	"git.dian.so/leto/util/base64"
-	"git.dian.so/leto/util/byte2str"
-	"git.dian.so/leto/util/commonEncrypt"
+	"github.com/MWangxj/util/base64"
+	"github.com/MWangxj/util/byte2str"
+	"github.com/MWangxj/util/commonEncrypt"
 	"net/http"
 	"net/url"
 	`os`

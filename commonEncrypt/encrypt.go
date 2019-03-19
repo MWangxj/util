@@ -2,9 +2,9 @@ package commonEncrypt
 
 import (
 	"encoding/json"
-	"git.dian.so/leto/util/aes"
-	"git.dian.so/leto/util/byte2str"
-	"git.dian.so/leto/util/md5"
+	"github.com/MWangxj/util/aes"
+	"github.com/MWangxj/util/byte2str"
+	"github.com/MWangxj/util/md5"
 	"strings"
 )
 

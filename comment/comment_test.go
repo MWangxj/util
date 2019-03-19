@@ -14,7 +14,7 @@ func TestGetFileNamesByDir(t *testing.T) {
 }
 
 func TestGetFileLine(t *testing.T) {
-	GetFileLine("/usr/local/gopath/src/git.dian.so/leto/util/comment/comment.go")
+	GetFileLine("/usr/local/gopath/src/github.com/MWangxj/util/comment/comment.go")
 }
 
 func TestParseFuncInfo(t *testing.T)  {

@@ -5,7 +5,7 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"errors"
-	"git.dian.so/leto/util/byte2str"
+	"github.com/MWangxj/util/byte2str"
 )
 
 type AesType uint8

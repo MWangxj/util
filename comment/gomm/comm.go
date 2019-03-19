@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	"git.dian.so/leto/util/comment"
+	"github.com/MWangxj/util/comment"
 	"log"
 	"os"
 	"sync"

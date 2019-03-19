@@ -1,12 +1,12 @@
 ## go util 使用
 
-go get -u -v git.dian.so/leto/util
+go get -u -v github.com/MWangxj/util
 
 
 ## aes 加密
 
     import (
-        git.dian.so/leto/util/aes
+        github.com/MWangxj/util/aes
     )
 
     aes.AesEncrypt(data, key []byte, t AesType) (res []byte, err error)
@@ -18,7 +18,7 @@ go get -u -v git.dian.so/leto/util
 ## base64 编码
 
     import (
-         git.dian.so/leto/util/base64
+         github.com/MWangxj/util/base64
     )
 
     base64.Base64Encoding(b []byte) string
@@ -29,7 +29,7 @@ go get -u -v git.dian.so/leto/util
 ## byte2str byte数组和string相互转化
 
     import (
-         git.dian.so/leto/util/byte2str
+         github.com/MWangxj/util/byte2str
     )
 
     byte2str.BytesCombine(pBytes ...[]byte) []byte
@@ -44,17 +44,17 @@ go get -u -v git.dian.so/leto/util
 ## cfg 读取配置包
 
     import(
-        git.dian.so/leto/util/cfg
+        github.com/MWangxj/util/cfg
     )
 
     cfg.Load(filePath string, cfg interface{}) error
 
 ## httpEncrypt http加密请求
 
-    1、go get -u -v git.dian.so/leto/util
+    1、go get -u -v github.com/MWangxj/util
 
     2、import(
-        "git.dian.so/leto/util/httpEncrypt"
+        "github.com/MWangxj/util/httpEncrypt"
     )
 
     3、使用
@@ -67,7 +67,7 @@ go get -u -v git.dian.so/leto/util
 
 
     import(
-        git.dian.so/leto/util/commonEncrypt
+        github.com/MWangxj/util/commonEncrypt
     )
 
     commonEncrypt.Encrypt(obj interface{}, accessKey string) (encrypt string, err error)

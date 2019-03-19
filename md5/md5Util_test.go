@@ -2,7 +2,7 @@ package md5
 
 import (
 	"fmt"
-	"git.dian.so/leto/util/byte2str"
+	"github.com/MWangxj/util/byte2str"
 	"testing"
 )
 

@@ -2,7 +2,7 @@ package comment
 
 import (
 	"bufio"
-	"git.dian.so/leto/util/byte2str"
+	"github.com/MWangxj/util/byte2str"
 	"io"
 	"io/ioutil"
 	"os"
