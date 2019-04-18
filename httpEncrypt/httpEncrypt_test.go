@@ -103,17 +103,17 @@ func TestPost(t *testing.T) {
 		Info  []SimInfo         `json:"info"`
 	}
 	mm.Param = make(map[string]string)
-	mm.Param["iccid"] = "898607B9101700026065"
+	mm.Param["msisdn"] = "1064711527817"
 	//mm.Param["queryDate"]="20181119"
 	//mm.Param["card_info"] = "898607B2111790002183"
 	//mm.Param["type"]="2"
-	mm.EbUrl = "querycardprodinfo"
+	mm.EbUrl = "userstatusrealsingle"
 	mm.Index = 2
-	sim := &SimInfo{}
-	sim.Msisdn = "1064724339193"
-	sim.Iccid = "898607B2111790002183"
-	sim.Imsi = "460041243302183"
-	mm.Info = []SimInfo{*sim}
+	//sim := &SimInfo{}
+	//sim.Msisdn = "1064724339193"
+	//sim.Iccid = "898607B2111790002183"
+	//sim.Imsi = "460041243302183"
+	//mm.Info = []SimInfo{*sim}
 	var (
 		res []byte
 		err error
@@ -123,7 +123,7 @@ func TestPost(t *testing.T) {
 	}
 	// 192.168.48.189:8080/v2/device/syncInfo"
 	// 59.110.53.169
-	if res, err = Do(app, HttpPost, "10.25.132.238:9001/v1/sim/info", head, mm); err != nil {
+	if res, err = Do(app, HttpPost, "10.25.132.238:9001/v1/sim/userstatus", head, mm); err != nil {
 		t.Fail()
 		return
 	}
@@ -146,7 +146,7 @@ func TestSimInfo(t *testing.T) {
 	mm.Param = make(map[string]string)
 	//mm.Param["iccid"] = "89860404101800021501"
 	//mm.Param["queryDate"]="20181119"
-	mm.Param["msisdn"] = "1064791990559"
+	mm.Param["msisdn"] = "1440406639982"
 	var (
 		res []byte
 		err error
@@ -239,7 +239,7 @@ func TestSimGetList(t *testing.T) {
 	}{}
 	//query.Start=0
 	//query.End=20
-	query.Msisdn="1064791990559"
+	query.Msisdn="1064711527817"
 
 	var (
 		res []byte
@@ -250,7 +250,7 @@ func TestSimGetList(t *testing.T) {
 	}
 	// 192.168.48.189:8080/v2/device/syncInfo"
 	// 59.110.53.169
-	if res, err = Do(app,HttpPost, "simcode.dian.so/v1/sim/onoffstatus", head, query); err != nil {
+	if res, err = Do(app,HttpPost, "simcode.dian.so/v1/sim/userstatus", head, query); err != nil {
 		t.Fail()
 		return
 	}
@@ -276,7 +276,7 @@ func listen() {
 		d := val.Get("data")
 		s := val.Get("sign")
 		fmt.Println(d, s)
-		fmt.Println(fmt.Sprintf("%V", urlR))
+		fmt.Println(fmt.Sprintf("%v", urlR))
 
 		b := make([]byte, 1<<11)
 		n, _ := request.Body.Read(b)
@@ -328,7 +328,7 @@ func TestBase64(t *testing.T) {
 	d := val.Get("data")
 	s := val.Get("sign")
 	fmt.Println(d, s)
-	fmt.Println(fmt.Sprintf("%V", urlR))
+	fmt.Println(fmt.Sprintf("%v", urlR))
 }
 
 func TestListen(t *testing.T) {
@@ -346,5 +346,5 @@ func TestUrlParse(t *testing.T) {
 	d := val.Get("data")
 	s := val.Get("sign")
 	fmt.Println(d, s)
-	fmt.Println(fmt.Sprintf("%V", urlR))
+	fmt.Println(fmt.Sprintf("%v", urlR))
 }

@@ -53,7 +53,9 @@ func Post(url string, header map[string]string, payload interface{}) (resp []byt
 	if !strings.HasPrefix(url, "http") {
 		url = protol + url
 	}
-	if data, err = json.Marshal(payload); err != nil {
+	if b,ok:=payload.([]byte);ok{
+		data=b
+	}else if data, err = json.Marshal(payload); err != nil {
 		return nil, err
 	}
 	if req, err = http.NewRequest("POST", url, strings.NewReader(byte2str.BytesToString(data))); err != nil {
