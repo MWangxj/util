@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strings"
+        "time"
 )
 
 // Get
@@ -44,7 +45,7 @@ func Get(url string, header, param map[string]string) (resp []byte, err error) {
 // Post
 func Post(url string, header map[string]string, payload interface{}) (resp []byte, err error) {
 	var (
-		client = &http.Client{}
+		client = &http.Client{Timeout: 5 * time.Second}
 		req    = &http.Request{}
 		res    = &http.Response{}
 		data   = make([]byte, 0)
